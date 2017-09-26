@@ -1,4 +1,4 @@
-
+#comments for testing GitHub
 library(shiny)
 library(shinythemes)
 
@@ -17,7 +17,34 @@ NSB <- function(noc_s, noc_s_bol) {
         return(nsb)
 }
 
-#age_bol <- 1 | 0
+DEE <- function (dys_exer, dys_exer_effect) {
+        dee = dys_exer_effect
+        return(dee)
+}
+
+DSE <- function(sex, dys_exer, dys_sex_effect) {
+        dse = dys_sex_effect
+        return(dse)
+}
+
+i = 1127.26 #intercept defined (Table 2. Wenjia's manuscript)
+alb_sex = -9.50 #Albumin*Sex (female vs. male)
+h_sex = -0.02 #Height square*Sex (female vs. male)
+smoke_trig = -0.003 #Smoke pack-years*Triglycerides
+female_male = -660.44 #Sex (female vs. male)
+
+trig_effect = -0.30
+hema_effect = -12.28
+alb_effect = 11.33
+glob_effect = -3.49
+alk_phos_effect = -1.48
+white_bc_effect = -0.20
+qrs_effect = 27.37
+alcohol_effect = -5.99
+wine_effect = 10.76
+cocktail_effect = -0.60
+height_effect = 0.11
+cum_smoke_effect = -3.46
 
 #Define UI for application that generates simulation, showing individualized
 #prediction of adulthood lung function decline for Framingham offspring cohort analysis
@@ -30,11 +57,6 @@ ui <- fluidPage(
         
         sidebarLayout(
                 sidebarPanel(
-                        # numericInput("inter", 
-                        #              "Intercept", 
-                        #              value = 1127.26,
-                        #              step = 1000, 
-                        #              width = 200),
                         numericInput("age", 
                                      "Age (year)", 
                                      value = 35, 
@@ -42,153 +64,89 @@ ui <- fluidPage(
                                      max = 64, 
                                      step = 1, 
                                      width = 200),
-                        # column(8,
-                        #        selectInput("age_cat_effect",
-                        #                    "Age category (vs. 20-34 y)",
-                        #                    list('35-49 y', '50-64 y'),
-                        #                    selected = '35-49 y',
-                        #                    width = 200)),
-                        # column(12,
-                        #        numericInput("b_age_cat",
-                        #                     "Baseline of age category (vs. 20-24 y)",
-                        #                     value = -29.47,
-                        #                     step = 0.01,
-                        #                     width = 200),
-                        #        offset = 7)),
-                        numericInput("sex", 
-                                     "Sex (female vs. male)",
-                                     value = -660.44, 
-                                     step = 100, 
-                                     width = 200),
+                        selectInput("sex",
+                                    "Sex",
+                                    list('female', 'male'),
+                                    selected = 'male'),
                         numericInput("trig", 
                                      "Triglycerides (mg/dl)", 
-                                     value = -0.30, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("hema", 
                                      "Hematocrit (%)", 
-                                     value = -12.28, 
+                                     value = " ", 
                                      min = 0,
                                      max = 100,
                                      step = 0.01, 
                                      width = 200),
                         numericInput("alb", 
                                      "Albumin (mg/L)", 
-                                     value = 11.33, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
-                        # numericInput("alb_sex", 
-                        #              "Albumin*Sex (female vs. male)", 
-                        #              value = -9.50,
-                        #              step = 0.01, 
-                        #              width = 200),
                         numericInput("glob", 
                                      "Globulin (g/L)", 
-                                     value = -3.49, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("alk_phos", 
                                      "Alkaline Phosphotase (units)", 
-                                     value = -1.48, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("white_bc", 
                                      "White blood cell count (10^9/L)", 
-                                     value = -0.20, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("qrs", 
                                      "QRS interval (hundredth of sec)", 
-                                     value = 27.37, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("alcohol", 
                                      "Alcohol index (ozs/wk)", 
-                                     value = -5.99, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("wine", 
                                      "Wine intake (glasses/wk)", 
-                                     value = 10.76, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("cocktail", 
                                      "Cocktail intake (drinks/wk)", 
-                                     value = -0.60, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
                         numericInput("height", 
                                      "Height square (cm^2)", 
-                                     value = 0.11, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
-                        # numericInput("height_sex", 
-                        #              "Height square*Sex (female vs. male)", 
-                        #              value = -0.02, 
-                        #              step = 0.01, 
-                        #              width = 200),
                         numericInput("cum_smoke", 
                                      "Cumulative smoke pack-year", 
-                                     value = -3.46, 
+                                     value = " ", 
                                      step = 0.01, 
                                      width = 200),
-                        # numericInput("smoke_py", 
-                        #              "Smoke  pack-years*Triglycerides", 
-                        #              value = 0.003,
-                        #              step = 0.001, 
-                        #              width = 200),
                         column(8,
                                selectInput("ba_use", 
                                            "Bronchodilator or aerosol (vs. no use)", 
                                            list('Current use', 'Former use'),
                                            selected = 'Current use')),
-                        # column(12, 
-                        #        numericInput("b_bron_or_aer", 
-                        #                     "Baseline of Bronchodilator or aerosol (vs. no use)", 
-                        #                     value = -264.01, 
-                        #                     min = -1000,
-                        #                     max = 1000,
-                        #                     step = 0.01, 
-                        #                     width = 200),
-                        # offset = 7)),
+
                         column(8,
-                               selectInput("bron_exer", 
+                               selectInput("dys_exer", 
                                            "Dyspnea on exertion (vs. none)", 
                                            list('On rigorous exercise', 'On moderate exercise', 'On slight exertion'),
                                            selected = 'On slight exertion')),
-                        # column(12, 
-                        #        numericInput("b_bron_exer", 
-                        #                     "Baseline of dyspnea on exertion (vs. none)",
-                        #                     value = -224.83,
-                        #                     step = 0.01,
-                        #                     width = 200),
-                        #        offset = 7)),
-                        column(8,
-                               selectInput("bron_sex", 
-                                           "Dyspnea*Sex (vs. male or no dyspnea)", 
-                                           list('Female, on rigorous exercise', 'Female, on moderate exercise', 
-                                                'Female, on slight exertion'),
-                                           selected = 'On slight exertion')),
-                        # column(12, 
-                        #        numericInput("b_bron_sex", 
-                        #                     "Baseline of dyspnea*Sex (vs. male or no dyspnea)",
-                        #                     value = 149.38,
-                        #                     step = 0.01,
-                        #                     width = 200),
-                        #        offset = 7)),
                         column(8,
                                selectInput("noc_s", 
                                            "Nocturnal symptoms (vs. none)", 
                                            list('Yes', 'Maybe'),
                                            selected = 'On slight exertion'))
-                        #       column(12, 
-                        #              numericInput("b_noc_symp", 
-                        #                         "Baseline of nocturnal symptoms (vs. none)", 
-                        #                           value = -342.92,
-                        #                           step = 0.01,
-                        #                           width = 200),
-                        #              offset = 7))
-                        # ),
+
                 ),
                 
                 mainPanel (
@@ -198,12 +156,14 @@ ui <- fluidPage(
                         verbatimTextOutput("age_cat_effect"),
                         tags$p("Bronchodilator or aerosol (vs. no use) Effect:"), #for end product have to remove
                         verbatimTextOutput("ba_use_effect"), #for end product have to remove
-                        tags$p("Dyspnea on exertion (vs. none):"),
-                        verbatimTextOutput("noc_s_effect")
-                     #   tags$p("Dyspnea*Sex (vs. male or no dyspnea):"),
-                     #   verbatimTextOutput(""),
-                     #   tags$p("Nocturnal symptoms (vs. none):"),
-                     #   verbatimTextOutput("")
+                        tags$p("Dyspnea on exertion (vs. none) Effect:"),
+                        verbatimTextOutput("dys_exer_effect"),
+                        tags$p("Dyspnea*Sex (vs. male or no dyspnea) Effect:"),
+                        verbatimTextOutput("dys_sex_effect"),
+                        tags$p("Nocturnal symptoms (vs. none) Effect:"),
+                        verbatimTextOutput("noc_s_effect"),
+                        tags$p("Baseline FEV Effect:"),
+                        verbatimTextOutput("baseline_FEV")
                 )
         )
 )
@@ -246,7 +206,76 @@ server <- function(input, output, session) {
                 }
                 NSB(input$noc_s, noc_s_bol)
         })
+
+        
+        output$dys_exer_effect <- renderText({
+                if(input$dys_exer == "On slight exertion") {
+                        dys_exer_effect = -226.09
+                } else if (input$dys_exer == "On moderate exercise") {
+                        dys_exer_effect = -560.37
+                } else {
+                        dys_exer_effect = -224.83
+                }
+                DEE(input$dys_exer, dys_exer_effect)
+        })
+
+        output$dys_sex_effect <- renderText({
+                if ((input$sex == 'male') & (input$dys_exer == 'On rigorous exercise')) {
+                        dys_sex_effect = -224.83
+                } else if ((input$sex == 'male') & (input$dys_exer == 'On moderate exercise')) {
+                        dys_sex_effect = -560.37
+                } else if ((input$sex == 'male') & (input$dys_exer == 'On slight exertion')) {
+                        dys_sex_effect = -226.09
+                } else if ((input$sex == 'female') & (input$dys_exer == 'On rigorous exercise')) {
+                        dys_sex_effect = 149.38
+                } else if ((input$sex == 'female') & (input$dys_exer == 'On moderate exercise')) {
+                        dys_sex_effect = 575.01
+                } else if ((input$sex == 'female') & (input$dys_exer == 'On slight exertion')) {
+                        dys_sex_effect = -368.46
+                }
+                DSE(input$sex, input$dys_exer, dys_sex_effect) #DOES NOT FUNCTION, get error message!!!
+        })
+        
+        # CI = effect +/- 1.96*SE
 }
+
+# output$baseline_FEV <- function (trig, hema, 
+#                                  alb, glob,
+#                                  alk_phos, white_bc, 
+#                                  qrs, alcohol, 
+#                                  wine, cocktail, 
+#                                  height, cum_smoke, 
+#                                  age, age_bol, 
+#                                  ba_use, ba_use_bol, 
+#                                  dys_exer, dys_exer_effect,
+#                                  noc_s, noc_s_bol,
+#                                  dys_sex_effect, sex, 
+#                                  ) {
+#   b_fev =
+#     i +
+#     alb_sex +
+#     h_sex +
+#     smoke_trig +
+#     female_male +
+#     ACE(input$age, age_bol) +
+#     BUE(input$ba_use, ba_use_bol) +
+#     NSB(input$noc_s, noc_s_bol) +
+#     DEE(input$dys_exer, dys_exer_effect) +
+#     DSE(input$sex, input$dys_exer, dys_sex_effect) +
+#     (input$trig*trig_effect) +
+#     (input$hema*hema_effect) +
+#     (input$alb*alb_effect) +
+#     (input$glob*glob_effect) +
+#     (input$alk_phos*alk_phos_effect) +
+#     (input$white_bc*white_bc_effect) +
+#     (input$qrs*qrs_effect) +
+#     (input$alcohol*alcohol_effect) +
+#     (input$wine*wine_effect) +
+#     (input$cocktail*cocktail_effect) +
+#     (input$height*height_effect) +
+#     (input$cum_smoke*cum_smoke_effect) +
+#   return(b_fev)
+# }}
 
 #Run the application
 shinyApp(ui = ui, server = server)
