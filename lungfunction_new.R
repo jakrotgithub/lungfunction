@@ -254,7 +254,7 @@ DEE <- function (dys_exer, dys_exer_effect) {
 #######For rate of change coefficient
 DEE_RC <- function (dys_exer, dys_exer_effect_rc) {
   # dee_rc = dys_exer_effect_rc
-  dee_rc = DYS_EXER_CHECK_RC(dys_exer) 
+  dee_rc = DYS_EXER_CHECK_RC(dys_exer) #DK
   return(dee_rc)
 }
 
@@ -365,8 +365,8 @@ ui <- fluidPage(
       numericInput("age",
                    "Age (year)",
                    value = NULL,               ###Have to change value to NULL!
-                   min = 35,
-                   max = 64,
+                   min = 0,
+                   max = 250,
                    step = 1,
                    width = 200),
       selectInput("sex",
@@ -375,7 +375,7 @@ ui <- fluidPage(
                   selected = 'male'),
       numericInput("follow_up_baseline",
                    "Follow-up since baseline (year)",
-                   value = 0,
+                   value = NULL,
                    min = -100,
                    max = 100,
                    width = 200),
@@ -386,59 +386,64 @@ ui <- fluidPage(
                    width = 200),
       numericInput("hema",
                    "Hematocrit (%)",
-                   value = 0,
+                   value = NULL,
                    min = 0,
                    max = 100,
                    step = 0.01,
                    width = 200),
       numericInput("alb",
                    "Albumin (mg/L)",
-                   value = 0,
+                   value = NULL,
                    step = 0.01,
                    width = 200),
       numericInput("glob",
                    "Globulin (g/L)",
-                   value = 0,
+                   value = NULL,
                    step = 0.01,
                    width = 200),
       numericInput("alk_phos",
                    "Alkaline Phosphotase (units)",
-                   value = 0,
+                   value = NULL,
                    step = 0.01,
                    width = 200),
       numericInput("white_bc",
                    "White blood cell count (10^9/L)",
-                   value = 0,
+                   value = NULL,
                    step = 0.01,
                    width = 200),
       numericInput("qrs",
                    "QRS interval (hundredth of sec)",
-                   value = 0,
+                   value = NULL,
                    step = 0.01,
                    width = 200),
       numericInput("alcohol",
                    "Alcohol index (ozs/wk)",
-                   value = 0,
+                   value = NULL,
+                   min = 0,
                    step = 0.01,
                    width = 200),
       numericInput("wine",
                    "Wine intake (glasses/wk)",
-                   value = 0,
+                   value = NULL,
+                   min = 0,
                    step = 0.01,
                    width = 200),
       numericInput("cocktail",
                    "Cocktail intake (drinks/wk)",
-                   value = 0,
+                   value = NULL,
+                   min = 0,
                    step = 0.01,
                    width = 200),
       numericInput("height_square",
                    "Height square (cm^2)",
-                   value = 0,
+                   value = NULL,
+                   min = 0,
                    step = 0.01,
                    width = 200),
       numericInput("cum_smoke",
                    "Cumulative smoke pack-year",
-                   value = 0,
+                   value = NULL,
+                   min = 0,
                    step = 0.01,
                    width = 200),
       column(8,
@@ -532,6 +537,9 @@ server <- function(input, output, session) {
     paste('y', '=', a, b, '*', 'x')
   })
   
+  
+  
+  ##########NULL functions
   # An observer is like a reactive expression in that it can read reactive values and call reactive expressions,
   # and will automatically re-execute when those dependencies change. But unlike reactive expressions,
   # it doesn't yield a result and can't be used as an input to other reactive expressions.
@@ -552,13 +560,138 @@ server <- function(input, output, session) {
     }
   }
   )
-  
+  #NULL for follow_up_baseline
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$follow_up_baseline)){return()}
+    else  {
+      react$follow_up_baseline <- input$follow_up_baseline
+    }
+  }
+  )
   #NULL for triglycerides
   react <- reactiveValues()
   observe({
     if(is.na(input$trig)){return()}
     else  {
       react$trig <- input$trig
+    }
+  }
+  )
+  #NULL for hematocrit
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$hema)){return()}
+    if(input$hema < 0){                                   
+      react$hema =0
+      updateNumericInput(session, "hema", hema = react$hema)
+    } else  {
+      react$hema <- input$hema
+    }
+  }
+  )
+  #NULL for albumin
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$alb)){return()}
+    else  {
+      react$aalb <- input$alb
+    }
+  }
+  )
+  #NULL for globulin
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$glob)){return()}
+    else  {
+      react$glob <- input$glob
+    }
+  }
+  )
+  #NULL for Alkaline Phosphotase
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$alk_phos)){return()}
+    else  {
+      react$alk_phos <- input$alk_phos
+    }
+  }
+  )
+  #NULL for white blood cell count
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$white_bc)){return()}
+    else  {
+      react$white_bc <- input$white_bc
+    }
+  }
+  )
+  #NULL for QRS interval (hundredth of sec)
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$qrs)){return()}
+    else  {
+      react$qrs <- input$qrs
+    }
+  }
+  )
+  #NULL for alcohol index
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$alcohol)){return()}
+    if(input$hema < 0){                                   
+      react$hema =0
+      updateNumericInput(session, "hema", hema = react$hema)
+    } else  {
+      react$alcohol <- input$alcohol
+    }
+  }
+  )
+  #NULL for wine intake
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$wine)){return()}
+    if(input$hema < 0){                                   
+      react$hema =0
+      updateNumericInput(session, "hema", hema = react$hema)
+    } else  {
+      react$wine <- input$wine
+    }
+  }
+  )
+  #NULL for cocktail intake
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$cocktail)){return()}
+    if(input$hema < 0){                                   
+      react$hema =0
+      updateNumericInput(session, "hema", hema = react$hema)
+    } else  {
+      react$cocktail <- input$cocktail
+    }
+  }
+  )
+  #NULL for Height
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$height_square)){return()}
+    if(input$hema < 0){                                   
+      react$hema =0
+      updateNumericInput(session, "hema", hema = react$hema)
+    } else  {
+      react$height_square <- input$height_square
+    }
+  }
+  )
+  #NULL for cumulative smoke pack-year
+  react <- reactiveValues()
+  observe({
+    if(is.na(input$cum_smoke)){return()}
+    if(input$hema < 0){                                   
+      react$hema =0
+      updateNumericInput(session, "hema", hema = react$hema)
+    } else  {
+      react$cum_smoke <- input$cum_smoke
     }
   }
   )
@@ -623,7 +756,7 @@ server <- function(input, output, session) {
   
   output$baseline_FEV <- renderText({
     
-    if(is.na(input$age)){return()} #DK - check if age input is NULL
+    if(is.na(input$age)){return()} #check if age input is NULL
     
     #perform parameter checks
     age_bool=AGE_CHECK(input$age)
@@ -655,7 +788,7 @@ server <- function(input, output, session) {
       validate(
         need(input$age != "", "Please enter age")
       )
-    } #DK - check if age input is NULL
+    } #check if age input is NULL
     
     #perform parameter checks
     age_bool=AGE_CHECK(input$age)
