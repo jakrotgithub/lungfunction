@@ -3,9 +3,9 @@ library(shinythemes)
 library(ggplot2)
 library(shinyjs)
 
-source('~/Documents/RStudio projects/20171008/delivery/FEV_coefficients.R')
-source('~/Documents/RStudio projects/20171008/delivery/FEV_functions.R')
-source('~/Documents/RStudio projects/20171008/delivery/FEV_sidebarPanel.R')
+source('~/Documents/RStudio projects/20171008/Lungfunction/FEV_coefficients.R')
+source('~/Documents/RStudio projects/20171008/Lungfunction/FEV_functions.R')
+source('~/Documents/RStudio projects/20171008/Lungfunction/FEV_sidebarPanel.R')
 
 
 

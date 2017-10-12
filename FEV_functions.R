@@ -3,33 +3,32 @@
 #             NSB_CHECK(), NSB_CHECK_RC(), BA_USE_CHECK(), BA_USE_CHECK_RC(), DYS_EXER_CHECK(), DYS_EXER_CHECK_RC()
 #             updated BINARY_CODE_FROM_INPUTS() - changed sex, ba_use, dys_exer, noc_s from is.null(...) to if(...)
 
-
 #List of function used in FEV program:
-#AGE_CHECK(age) - 
-#BA_USE_CHECK(ba_use) - 
-#BA_USE_CHECK_RC(ba_use) - 
-#NSB_CHECK(noc_s) - 
-#NSB_CHECK_RC(noc_s) - 
-#DYS_EXER_CHECK(dys_exer) - 
-#DYS_EXER_CHECK_RC(dys_exer) - 
-#SEX_CHECK(sex, dys_exer) - 
-#AS(sex, alb) - 
-#HS(sex, height_square) - 
-#SEX_FM(sex) - 
-#SEX_FM_RC(sex) - 
-#SFM(dys_exer) - 
-#ACE(age) - 
-#ACE_RC(age) - 
-#BUE(ba_use, ba_use_bool) - 
-#BUE_RC(ba_use, ba_use_bool_rc) - 
-#NSB(noc_s, noc_s_bool) - 
-#NSB_RC(noc_s, noc_s_bool_rc) - 
-#DEE(dys_exer, dys_exer_effect) - 
-#DEE_RC(dys_exer, dys_exer_effect_rc) - 
-#DSE(sex, dys_exer, dys_sex_effect) - 
-#FEV <- function (trig,...,sex) - 
-#FEV_RC <- function (follow_up_baseline,...,sex) - 
-#BINARY_CODE_FROM_INPUTS(...) - 
+#AGE_CHECK(age) - checks patient's age falls into one of the two age categories: 35-49 y or 50-64 y.
+#BA_USE_CHECK(ba_use) - produces boolean, indicating the use of bronchodilator or aerosol by patient (for baseline)
+#BA_USE_CHECK_RC(ba_use) - produces boolean, indicating the use of bronchodilator or aerosol by patient (for FEV rate of change)
+#NSB_CHECK(noc_s) - produces boolean, indicating patient's nocturnal symptoms (for baseline)
+#NSB_CHECK_RC(noc_s) - produces boolean, indicating patient's nocturnal symptoms (for FEV rate of change)
+#DYS_EXER_CHECK(dys_exer) - dyspnea on exertion/varying levels of exercise (for baseline)
+#DYS_EXER_CHECK_RC(dys_exer) - dyspnea on exertion/varying levels of exercise (for FEV rate of change)
+#SEX_CHECK(sex, dys_exer) - checks if female & dyspnea on exertion/varying levels of exercise
+#AS(sex, alb) - effect of female on level of albumin (Albumin*sex)
+#HS(sex, height_square) - effect of female on height (Height square * sex)
+#SEX_FM(sex) - effect on sex on baseline
+#SEX_FM_RC(sex) - effect of sex on FEV rate of change
+#SFM(dys_exer) - ???CAN REMOVE?
+#ACE(age) - effect of age on baseline (2 components: Age, y effect & Age category)
+#ACE_RC(age) - effect of age on FEV rate of change (2 components: Age, y effect & Age category)
+#BUE(ba_use, ba_use_bool) - bronchodilator or aerosol use by patient (for baseline)
+#BUE_RC(ba_use, ba_use_bool_rc) - bronchodilator or aerosol use by patient (for rate of change)
+#NSB(noc_s, noc_s_bool) - nocturnal symptoms' effect (on baseline)
+#NSB_RC(noc_s, noc_s_bool_rc) - nocturnal symptoms' effect (on rate of change)
+#DEE(dys_exer, dys_exer_effect) - dyspnea on exertion's effect (on baseline)
+#DEE_RC(dys_exer, dys_exer_effect_rc) - dyspnea on exertion's effect (on rate of change)
+#DSE(sex, dys_exer, dys_sex_effect) - ???CAN REMOVE?
+#FEV <- function (trig,...,sex) - baseline forced expiratory volume (FEV); intercept of linear regression equation
+#FEV_RC <- function (follow_up_baseline,...,sex) - rate of FEV change; slope of linear regression equation
+#BINARY_CODE_FROM_INPUTS(...) - binary code that tracks doctor's inputs (NULL or not NULL) & produces the name of model (i.e. binary code)
 
 #functions that determine boolean values
 AGE_CHECK <- function(age){
@@ -344,20 +343,20 @@ BINARY_CODE_FROM_INPUTS <- function(
   dys_exer,#selectInput
   noc_s#selectInput
 ) {
-  if(is.null(age)) {F1 = 0} else {F1 = 1}
-  if(is.null(follow_up_baseline)) {F2 = 0} else {F2 = 1}
-  if(is.null(trig)) {F3 = 0} else {F3 = 1}
-  if(is.null(hema)) {F4 = 0} else {F4 = 1}
-  if(is.null(alb)) {F5 = 0} else {F5 = 1}
-  if(is.null(glob)) {F6 = 0} else {F6 = 1}
-  if(is.null(alk_phos)) {F7 = 0} else {F7 = 1}
-  if(is.null(white_bc)) {F8 = 0} else {F8 = 1}
-  if(is.null(qrs)) {F9 = 0} else {F9 = 1}
-  if(is.null(alcohol)) {F10 = 0} else {F10 = 1}
-  if(is.null(wine)) {F11 = 0} else {F11 = 1}
-  if(is.null(cocktail)) {F12 = 0} else {F12 = 1}
-  if(is.null(height_square)) {F13 = 0} else {F13 = 1}
-  if(is.null(cum_smoke)) {F14 = 0} else {F14 = 1}
+  if(is.na(age)) {F1 = 0} else {F1 = 1}
+  if(is.na(follow_up_baseline)) {F2 = 0} else {F2 = 1}
+  if(is.na(trig)) {F3 = 0} else {F3 = 1}
+  if(is.na(hema)) {F4 = 0} else {F4 = 1}
+  if(is.na(alb)) {F5 = 0} else {F5 = 1}
+  if(is.na(glob)) {F6 = 0} else {F6 = 1}
+  if(is.na(alk_phos)) {F7 = 0} else {F7 = 1}
+  if(is.na(white_bc)) {F8 = 0} else {F8 = 1}
+  if(is.na(qrs)) {F9 = 0} else {F9 = 1}
+  if(is.na(alcohol)) {F10 = 0} else {F10 = 1}
+  if(is.na(wine)) {F11 = 0} else {F11 = 1}
+  if(is.na(cocktail)) {F12 = 0} else {F12 = 1}
+  if(is.na(height_square)) {F13 = 0} else {F13 = 1}
+  if(is.na(cum_smoke)) {F14 = 0} else {F14 = 1}
   if(sex == 'Not Selected') {F15 = 0} else {F15 = 1}
   if(ba_use == 'Not Selected') {F16 = 0} else {F16 = 1}
   if(dys_exer == 'Not Selected') {F17 = 0} else {F17 = 1}
