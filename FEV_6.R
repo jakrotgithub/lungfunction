@@ -28,7 +28,7 @@ ui <- fluidPage(
       tags$p("Plot graph of linear regression:"),
       plotOutput("plot"),
       tags$p("Regression line:"),
-      verbatimTextOutput("regression_line"), width = 5, class = 'rightAlign'
+      verbatimTextOutput("regression_line"), width = 5, class = 'rightAlign' 
     )
   )
 )
@@ -201,7 +201,7 @@ server <- function(input, output, session) {
                                "NULL",
                                "NULL",
                                "NULL",
-                               "NULL",
+                               "NULL",              
                                "NULL",
                                "NULL",
                                "NULL",
@@ -470,14 +470,14 @@ server <- function(input, output, session) {
   observe({
     if(is.na(input$cum_smoke)){return()}
     if(input$hema < 0){                                   
-      react$hema =0
+      react$hema = 0
       updateNumericInput(session, "hema", hema = react$hema)
     } else  {
       react$cum_smoke <- input$cum_smoke
     }
   }
   )
-  
+
   # browser()
   output$age_cat_effect <- renderText({
     # age_bool=AGE_CHECK(input$age)
