@@ -16,16 +16,12 @@
 #HS(sex, height_square) - effect of female on height (Height square * sex)
 #SEX_FM(sex) - effect on sex on baseline
 #SEX_FM_RC(sex) - effect of sex on FEV rate of change
-#SFM(dys_exer) - ???CAN REMOVE?
 #ACE(age) - effect of age on baseline (2 components: Age, y effect & Age category)
 #ACE_RC(age) - effect of age on FEV rate of change (2 components: Age, y effect & Age category)
 #BUE(ba_use, ba_use_bool) - bronchodilator or aerosol use by patient (for baseline)
 #BUE_RC(ba_use, ba_use_bool_rc) - bronchodilator or aerosol use by patient (for rate of change)
 #NSB(noc_s, noc_s_bool) - nocturnal symptoms' effect (on baseline)
 #NSB_RC(noc_s, noc_s_bool_rc) - nocturnal symptoms' effect (on rate of change)
-#DEE(dys_exer, dys_exer_effect) - dyspnea on exertion's effect (on baseline)
-#DEE_RC(dys_exer, dys_exer_effect_rc) - dyspnea on exertion's effect (on rate of change)
-#DSE(sex, dys_exer, dys_sex_effect) - ???CAN REMOVE?
 #FEV <- function (trig,...,sex) - baseline forced expiratory volume (FEV); intercept of linear regression equation
 #FEV_RC <- function (follow_up_baseline,...,sex) - rate of FEV change; slope of linear regression equation
 #BINARY_CODE_FROM_INPUTS(...) - binary code that tracks doctor's inputs (NULL or not NULL) & produces the name of model (i.e. binary code)
@@ -143,11 +139,11 @@ SEX_FM_RC <- function(sex) {
   }
   return (female_male_effect_rc)
 }
-
-SFM <- function(dys_exer) { #DK - Right now all this function does is call the DYS_EXER_CHECK_RC function, not sure if this is correct, might need to update
-  sex_fm_rc = DYS_EXER_CHECK_RC(dys_exer)
-  return(sex_fm_rc)
-}
+# 
+# SFM <- function(dys_exer) { #DK - Right now all this function does is call the DYS_EXER_CHECK_RC function, not sure if this is correct, might need to update
+#   sex_fm_rc = DYS_EXER_CHECK_RC(dys_exer)
+#   return(sex_fm_rc)
+# }
 
 ACE <- function(age) {
   age_bool=AGE_CHECK(age)
@@ -210,24 +206,24 @@ NSB_RC <- function(noc_s, noc_s_bool_rc) {
   return(nsb_rc)
 }
 
-#DEE - Dyspnea on Exertion Effect
-DEE <- function (dys_exer, dys_exer_effect) {
-  dee = dys_exer_effect
-  return(dee)
-}
+# #DEE - Dyspnea on Exertion Effect
+# DEE <- function (dys_exer, dys_exer_effect) {
+#   dee = dys_exer_effect
+#   return(dee)
+# }
+# 
+# #######For rate of change coefficient
+# DEE_RC <- function (dys_exer, dys_exer_effect_rc) {
+#   # dee_rc = dys_exer_effect_rc
+#   dee_rc = DYS_EXER_CHECK_RC(dys_exer) 
+#   return(dee_rc)
+# }
 
-#######For rate of change coefficient
-DEE_RC <- function (dys_exer, dys_exer_effect_rc) {
-  # dee_rc = dys_exer_effect_rc
-  dee_rc = DYS_EXER_CHECK_RC(dys_exer) 
-  return(dee_rc)
-}
-
-#DSE - Dyspnea Sex Effect
-DSE <- function(sex, dys_exer, dys_sex_effect) {
-  dse = dys_sex_effect
-  return(dse)
-}
+# #DSE - Dyspnea Sex Effect
+# DSE <- function(sex, dys_exer, dys_sex_effect) {
+#   dse = dys_sex_effect
+#   return(dse)
+# }
 
 FEV <- function (trig,
                  hema,
@@ -258,8 +254,8 @@ FEV <- function (trig,
     ACE(age) +                                                      ###JK
     BUE(ba_use, ba_use_bool) +             
     NSB(noc_s, noc_s_bool) +               
-    DEE(dys_exer, DYS_EXER_CHECK(dys_exer)) +       #UPDATED
-    DSE(sex, dys_exer, SEX_CHECK(sex,dys_exer)) +   #UPDATED
+    DYS_EXER_CHECK(dys_exer) +       #UPDATED
+    SEX_CHECK(sex, dys_exer) +   #UPDATED
     (trig*trig_effect) +                  
     (hema*hema_effect) +                  
     (alb*alb_effect) +                    
@@ -305,7 +301,7 @@ FEV_RC <- function (follow_up_baseline,
     ACE_RC(age) +                                                           ###JK
     BUE_RC(ba_use, ba_use_bool_rc) +             
     NSB_RC(noc_s, noc_s_bool_rc) +               
-    DEE_RC(dys_exer, DYS_EXER_CHECK_RC(dys_exer)) +      
+    DYS_EXER_CHECK_RC(dys_exer) +      
     (trig*trig_effect_rc) +                  
     (hema*hema_effect_rc) +                  
     (alb*alb_effect_rc) +                    

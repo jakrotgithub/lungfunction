@@ -514,28 +514,28 @@ server <- function(input, output, session) {
     NSB(input$noc_s, noc_s_bool_rc)
   })
   
-  output$dys_exer_effect <- renderText({
-    dys_exer_effect=DYS_EXER_CHECK(input$dys_exer)
-    DEE(input$dys_exer, dys_exer_effect)
-  })
-  #######For rate of change coefficient
-  output$dys_exer_effect_rc <- renderText({
-    dys_exer_effect_rc=DYS_EXER_CHECK_RC(input$dys_exer)
-    DEE(input$dys_exer, dys_exer_effect_rc)
-  })
+  # output$dys_exer_effect <- renderText({
+  #   dys_exer_effect=DYS_EXER_CHECK(input$dys_exer)
+  #   DEE(input$dys_exer, dys_exer_effect)
+  # })
+  # #######For rate of change coefficient
+  # output$dys_exer_effect_rc <- renderText({
+  #   dys_exer_effect_rc=DYS_EXER_CHECK_RC(input$dys_exer)
+  #   DEE(input$dys_exer, dys_exer_effect_rc)
+  # })
+  # 
+  # output$dys_sex_effect <- renderText({
+  #   dys_sex_effect=SEX_CHECK(input$sex, input$dys_exer)
+  #   DSE(input$sex, input$dys_exer, dys_sex_effect)
+  # })
   
-  output$dys_sex_effect <- renderText({
-    dys_sex_effect=SEX_CHECK(input$sex, input$dys_exer)
-    DSE(input$sex, input$dys_exer, dys_sex_effect)
-  })
-  
-  #####For rate of change of FEV
-  output$female_male_effect_rc <- renderText({
-    female_male_effect_rc=SEX_FM_RC(input$sex)
-    # SFM(input$sex, female_male_effect_rc)
-    SFM(dys_exer)
-  })
-  
+  # #####For rate of change of FEV
+  # output$female_male_effect_rc <- renderText({
+  #   female_male_effect_rc=SEX_FM_RC(input$sex)
+  #   # SFM(input$sex, female_male_effect_rc)
+  #   SFM(dys_exer)
+  # })
+  # 
   output$baseline_FEV <- renderText({
     
     if(is.na(input$age)){return()} #check if age input is NULL
