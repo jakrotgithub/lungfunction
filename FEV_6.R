@@ -3,10 +3,9 @@ library(shinythemes)
 library(ggplot2)
 library(shinyjs)
 
-source('~/Documents/RStudio projects/20171008/Lungfunction/FEV_coefficients.R')
-source('~/Documents/RStudio projects/20171008/Lungfunction/FEV_functions.R')
-source('~/Documents/RStudio projects/20171008/Lungfunction/FEV_sidebarPanel.R')
-
+source('~/Documents/RStudio projects1/20171008/Lungfunction/FEV_coefficients.R')
+source('~/Documents/RStudio projects1/20171008/Lungfunction/FEV_functions.R')
+source('~/Documents/RStudio projects1/20171008/Lungfunction/FEV_sidebarPanel.R')
 
 
 #Define UI for application that generates simulation, showing individualized
@@ -21,10 +20,10 @@ ui <- fluidPage(
     FEV_sidebar(),
 
     mainPanel (
-      tags$p("Baseline FEV Effect (mL):"),
-      verbatimTextOutput("baseline_FEV"),
-      tags$p("Rate of FEV change, mL/y:"),
-      verbatimTextOutput("rate_of_change_FEV"),
+      # tags$p("Baseline FEV Effect (mL):"),
+      # verbatimTextOutput("baseline_FEV"),
+      # tags$p("Rate of FEV change, mL/y:"),
+      # verbatimTextOutput("rate_of_change_FEV"),
       tags$p("Plot graph of linear regression:"),
       plotOutput("plot"),
       tags$p("Regression line:"),
@@ -41,6 +40,8 @@ server <- function(input, output, session) {
   
   #Submit inputs to calculate FEV coefficients
   observeEvent(input$submit_inputs,{
+    
+    #browser()
     # 1.Determine which inputs are null - generate "binary"-notation filename based on that
     file_name=BINARY_CODE_FROM_INPUTS(input$age,
                             input$follow_up_baseline,
@@ -218,10 +219,15 @@ server <- function(input, output, session) {
     write.csv( FEV_data_frame , file = 'FEV_inputs.csv')
   })  
   
-  
-
+  v <- reactiveValues(doPlot = FALSE)
+observeEvent(input$calc_and_plot, {
+  v$doPlot <- input$calc_and_plot
+})
   
   output$plot <- renderPlot({
+    if (v$doPlot == FALSE) return()
+    
+    isolate({
     ba_use_bool=BA_USE_CHECK(input$ba_use)
     noc_s_bool=NSB_CHECK(input$noc_s)
     dys_exer_effect=DYS_EXER_CHECK(input$dys_exer)
@@ -276,11 +282,14 @@ server <- function(input, output, session) {
      geom_line()
 ################END OF NEW GGPLOT CODE########################
 
-
+})
   })
   
   
   output$regression_line <- renderText({
+    if (v$doPlot == FALSE) return()
+    
+    isolate({
     ba_use_bool=BA_USE_CHECK(input$ba_use)
     noc_s_bool=NSB_CHECK(input$noc_s)
     dys_exer_effect=DYS_EXER_CHECK(input$dys_exer)
@@ -318,8 +327,9 @@ server <- function(input, output, session) {
 
    paste('y', '=', fev_slope, '*', 'x','+ (', fev_intercept,')')
   })
+  })
   
-  
+
   
   ##########NULL functions
   # An observer is like a reactive expression in that it can read reactive values and call reactive expressions,
@@ -599,8 +609,6 @@ server <- function(input, output, session) {
         input$ba_use, ba_use_bool_rc,
         input$dys_exer,
         input$noc_s, noc_s_bool_rc, input$sex)
-    
-      
 
   })
   
