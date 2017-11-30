@@ -1,4 +1,4 @@
-FEV_check_for_na_in_inputs <- function(){
+FEV_check_for_na_in_inputs <- function(){ 
   react <- reactiveValues()                               #Create an object for storing reactive values; name of the object = react
   observe({                                               #Create a reactive observer - reactive expression in that it can read reactive values and call reactive expressions, reexecutes when dependencies change
     if(is.na(input$age)){return()}                        #is.na(input$age) tests is age input is not available; if age input is not available returns NULL

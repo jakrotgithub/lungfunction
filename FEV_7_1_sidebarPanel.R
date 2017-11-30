@@ -1,5 +1,5 @@
   button_width <- 160
-  
+   
   sidebarPanel(
   fluidRow(
     column(12,

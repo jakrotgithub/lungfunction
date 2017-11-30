@@ -10,7 +10,7 @@ library(fBasics)
 library(ROCR)
 library(pROC)
 library(ipw)
-library(data.table)
+library(data.table) 
 
 source('~/Documents/RStudio projects1/20171008/Lungfunction2/FEV_functions.R')
 source('~/Documents/RStudio projects1/20171008/Lungfunction2/FEV_na_inputs_check.R')
