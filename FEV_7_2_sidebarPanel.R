@@ -1,4 +1,5 @@
-  button_width <- 160
+#Nov. 3rd  
+button_width <- 160
   
   sidebarPanel(
   fluidRow(
