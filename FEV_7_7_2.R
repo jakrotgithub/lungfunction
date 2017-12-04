@@ -1,4 +1,4 @@
-#added description for FEV_slope & FEV_intercept functions
+#added description for FEV_slope & FEV_intercept functions 
 #changed names of two functions to something more intuitive:
 #FEV_pass_coefficients -> FEV_slope
 #FEV_RC_pass_coefficients -> FEV_intercept
