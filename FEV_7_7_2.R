@@ -2,7 +2,7 @@
 #changed names of two functions to something more intuitive:
 #FEV_pass_coefficients -> FEV_slope
 #FEV_RC_pass_coefficients -> FEV_intercept
-#included sidebarPanel file back in the mainPanel
+###included sidebarPanel file back in the mainPanel
 
 library(shiny)
 library(shinythemes)

@@ -1,4 +1,4 @@
-###CHANGE NOTES:
+#CHANGE NOTES:
 # 2017-10-08: added 'Not Selected' options for:
 #             NSB_CHECK(), NSB_CHECK_RC(), BA_USE_CHECK(), BA_USE_CHECK_RC(), DYS_EXER_CHECK(), DYS_EXER_CHECK_RC()
 #             updated BINARY_CODE_FROM_INPUTS() - changed sex, ba_use, dys_exer, noc_s from is.null(...) to if(...)
